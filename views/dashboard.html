@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIGED La Serena — Panel de Gestión</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="marca">
+      <img src="/assets/logo.svg" alt="Municipalidad de La Serena" />
+      <div>
+        <div class="nombre">SIGED La Serena</div>
+        <div class="subnombre">Coordinación de Delegaciones</div>
+      </div>
+    </div>
+    <div class="usuario">
+      <span id="rutUsuario">—</span>
+      <button id="btnSalir">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="activo" data-vista="captura">Captura de Requerimiento</button>
+    <button data-vista="semaforo">Panel Semáforo</button>
+    <button data-vista="kanban">Tablero Kanban</button>
+  </nav>
+
+  <main>
+    <!-- 6.1 Pantalla de Captura -->
+    <section class="vista activa" id="vista-captura">
+      <div class="panel">
+        <h2>Registro de Requerimiento Territorial</h2>
+        <p class="descripcion">Ingreso manual de reclamos, solicitudes, consultas, sugerencias o felicitaciones.</p>
+
+        <form id="formCaptura" class="form-grid">
+          <div>
+            <label for="nombre">Nombre del vecino / usuario *</label>
+            <input type="text" id="nombre" placeholder="Ej: María González Pérez" required />
+          </div>
+          <div>
+            <label for="telefono">Teléfono WhatsApp *</label>
+            <input type="text" id="telefono" placeholder="+56 9 8765 4321" required />
+          </div>
+
+          <div>
+            <label for="delegacion">Delegación territorial *</label>
+            <select id="delegacion" required></select>
+          </div>
+          <div>
+            <label for="canal">Canal de ingreso *</label>
+            <select id="canal" required>
+              <option value="WHATSAPP">WhatsApp Bot</option>
+              <option value="PRESENCIAL">Presencial</option>
+              <option value="CORREO">Correo electrónico</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="area">Área temática *</label>
+            <select id="area" required></select>
+          </div>
+          <div>
+            <label for="tipo">Tipo de entrada *</label>
+            <select id="tipo" required>
+              <option value="RECLAMO">Reclamo</option>
+              <option value="SOLICITUD">Solicitud de ayuda</option>
+              <option value="CONSULTA">Consulta</option>
+              <option value="SUGERENCIA">Sugerencia</option>
+              <option value="FELICITACION">Felicitación</option>
+            </select>
+          </div>
+
+          <div class="full">
+            <label for="descripcion">Descripción de la situación *</label>
+            <textarea id="descripcion" placeholder="Describe la solicitud con el mayor detalle posible..." required></textarea>
+          </div>
+
+          <div class="full">
+            <label for="funcionario">Funcionario asignado</label>
+            <input type="text" id="funcionario" placeholder="Ej: Juan Carlos Pérez (Cuadrilla Aseo)" />
+          </div>
+
+          <div class="form-acciones">
+            <button type="reset" class="btn-secundario">Limpiar</button>
+            <button type="submit" class="btn-guardar">Guardar ticket</button>
+          </div>
+
+          <div class="confirmacion full" id="confirmacionCaptura">Ticket guardado correctamente.</div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6.2 Panel Semáforo -->
+    <section class="vista" id="vista-semaforo">
+      <div class="panel">
+        <h2>Panel de Control de Gestión</h2>
+        <p class="descripcion">Estado de cumplimiento diario de todos los requerimientos activos.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID Ticket</th>
+              <th>Fecha</th>
+              <th>Vecino</th>
+              <th>Área</th>
+              <th>Delegación</th>
+              <th>Semáforo</th>
+              <th>Estado</th>
+              <th>Responsable</th>
+            </tr>
+          </thead>
+          <tbody id="tablaSemaforo">
+            <tr><td colspan="8">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6.3 Tablero Kanban -->
+    <section class="vista" id="vista-kanban">
+      <div class="panel">
+        <h2>Tablero Operativo por Estado</h2>
+        <p class="descripcion">Vista Kanban de los requerimientos según su etapa actual.</p>
+        <div class="kanban" id="tableroKanban">
+          <div class="kanban-columna" data-col="Pendientes"><h3>Pendientes</h3></div>
+          <div class="kanban-columna" data-col="En Proceso"><h3>En Proceso</h3></div>
+          <div class="kanban-columna" data-col="Cuello Botella"><h3>Cuello Botella</h3></div>
+          <div class="kanban-columna" data-col="Resueltos"><h3>Resueltos</h3></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

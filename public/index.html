@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIGED La Serena — Iniciar sesión</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="login-page">
+  <div class="login-card">
+    <img src="assets/logo.svg" alt="Municipalidad de La Serena" class="login-logo" />
+    <h1>Ilustre Municipalidad de La Serena</h1>
+    <p class="subtitulo">SIGED · Sistema Integrado de Gestión Operativa y Control de Requerimientos Delegacionales</p>
+
+    <div id="mensajeError" class="mensaje-error"></div>
+
+    <form id="formLogin" novalidate>
+      <div class="campo">
+        <label for="rut">RUT</label>
+        <input
+          type="text"
+          id="rut"
+          name="rut"
+          placeholder="11111111-1"
+          inputmode="numeric"
+          autocomplete="username"
+          maxlength="10"
+          required
+        />
+        <div class="ayuda">Solo números y guion, sin puntos. Ej: 11111111-1</div>
+        <div class="error-campo" id="errorRut"></div>
+      </div>
+
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        />
+        <div class="error-campo" id="errorPassword"></div>
+      </div>
+
+      <button type="submit" class="btn-primario" id="btnIngresar">Ingresar</button>
+    </form>
+
+    <div class="login-footer">Acceso restringido a funcionarios autorizados de la Municipalidad de La Serena.</div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>
