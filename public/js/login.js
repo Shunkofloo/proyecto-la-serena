@@ -53,6 +53,22 @@ const errorPassword = document.getElementById('errorPassword');
 const mensajeError = document.getElementById('mensajeError');
 const form = document.getElementById('formLogin');
 const btnIngresar = document.getElementById('btnIngresar');
+const loginCard = document.getElementById('loginCard');
+const btnAbrirLogin = document.getElementById('btnAbrirLogin');
+const btnCerrarLogin = document.getElementById('btnCerrarLogin');
+
+function cambiarVisibilidadLogin(visible) {
+  loginCard.classList.toggle('visible', visible);
+  loginCard.setAttribute('aria-hidden', String(!visible));
+  btnAbrirLogin.setAttribute('aria-expanded', String(visible));
+  if (visible) inputRut.focus();
+}
+
+btnAbrirLogin.addEventListener('click', () => {
+  cambiarVisibilidadLogin(!loginCard.classList.contains('visible'));
+});
+
+btnCerrarLogin.addEventListener('click', () => cambiarVisibilidadLogin(false));
 
 inputRut.addEventListener('input', () => {
   const posicionAntes = inputRut.selectionStart;

@@ -13,6 +13,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
 const ADMIN_RUT = normalizeRut(process.env.ADMIN_RUT || '');
 const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
 
@@ -31,7 +32,7 @@ if (!ADMIN_PASSWORD_HASH || ADMIN_PASSWORD_HASH.includes('PEGA_AQUI')) {
 app.use(helmet());
 app.use(
   cors({
-    origin: true,
+    origin: CORS_ORIGIN || false,
     credentials: true,
   })
 );
@@ -40,11 +41,11 @@ app.use(cookieParser());
 
 // Limita intentos de login para mitigar fuerza bruta
 const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
+  windowMs: 60 * 1000, // 1 minuto
   max: 8,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'Demasiados intentos de inicio de sesión. Intenta nuevamente en unos minutos.' },
+  message: { error: 'Demasiados intentos de inicio de sesión. Intenta nuevamente en un minuto.' },
 });
 
 // ---------- Utilidades de RUT chileno ----------
@@ -98,11 +99,23 @@ function requireAuth(req, res, next) {
   }
 }
 
+function requireRole(role) {
+  return (req, res, next) => {
+    if (!req.user || req.user.role !== role) {
+      return res.status(403).json({ error: 'No tienes autorización para acceder a este recurso.' });
+    }
+    return next();
+  };
+}
+
 app.post('/api/login', loginLimiter, async (req, res) => {
   const { rut, password } = req.body || {};
 
-  if (!rut || !password) {
+  if (typeof rut !== 'string' || typeof password !== 'string' || !rut.trim() || !password) {
     return res.status(400).json({ error: 'Debes ingresar RUT y contraseña.' });
+  }
+  if (Buffer.byteLength(password, 'utf8') > 72) {
+    return res.status(400).json({ error: 'La contraseña supera el largo permitido.' });
   }
   if (!isValidRut(rut)) {
     return res.status(400).json({ error: 'El RUT ingresado no tiene un formato válido.' });
@@ -115,6 +128,9 @@ app.post('/api/login', loginLimiter, async (req, res) => {
 
   if (cleanRut !== ADMIN_RUT) return invalidCredentials();
   if (!ADMIN_PASSWORD_HASH) return res.status(500).json({ error: 'El servidor no tiene credenciales configuradas.' });
+  if (!JWT_SECRET || JWT_SECRET.includes('cambia_este_valor')) {
+    return res.status(500).json({ error: 'El servidor no tiene la sesión configurada de forma segura.' });
+  }
 
   const passwordOk = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
   if (!passwordOk) return invalidCredentials();
@@ -166,19 +182,22 @@ const requerimientos = [
 ];
 
 // Todas las rutas de datos requieren sesión activa
-app.get('/api/catalogos', requireAuth, (req, res) => {
+app.get('/api/catalogos', requireAuth, requireRole('ADMINISTRADOR'), (req, res) => {
   res.json({ delegaciones, areas });
 });
 
-app.get('/api/requerimientos', requireAuth, (req, res) => {
+app.get('/api/requerimientos', requireAuth, requireRole('ADMINISTRADOR'), (req, res) => {
   res.json(requerimientos);
 });
 
-app.post('/api/requerimientos', requireAuth, (req, res) => {
+app.post('/api/requerimientos', requireAuth, requireRole('ADMINISTRADOR'), (req, res) => {
   const { nombre, telefono, delegacion, canal, area, tipo, descripcion, funcionario } = req.body || {};
 
   if (!nombre || !telefono || !delegacion || !canal || !area || !tipo || !descripcion) {
     return res.status(400).json({ error: 'Faltan campos obligatorios del formulario.' });
+  }
+  if (!/^\+569\d{8}$/.test(String(telefono))) {
+    return res.status(400).json({ error: 'El teléfono debe comenzar con +569 y contener 8 números adicionales.' });
   }
 
   const nuevo = {
@@ -200,7 +219,7 @@ app.post('/api/requerimientos', requireAuth, (req, res) => {
 // ---------- Páginas y archivos estáticos del frontend ----------
 // dashboard.html vive fuera de /public a propósito: así nunca se sirve como
 // archivo estático sin pasar antes por requireAuth.
-app.get('/dashboard', requireAuth, (req, res) => {
+app.get('/dashboard', requireAuth, requireRole('ADMINISTRADOR'), (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 

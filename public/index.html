@@ -7,47 +7,96 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="login-page">
-  <div class="login-card">
-    <img src="assets/logo.svg" alt="Municipalidad de La Serena" class="login-logo" />
-    <h1>Ilustre Municipalidad de La Serena</h1>
-    <p class="subtitulo">SIGED · Sistema Integrado de Gestión Operativa y Control de Requerimientos Delegacionales</p>
+  <div class="sitio-publico">
+    <div class="barra-util">
+      <div class="barra-util-contenido">
+        <span>Municipalidad de La Serena</span>
+        <div class="enlaces-utiles">
+          <span>Transparencia</span>
+          <span>Contacto</span>
+          <span>Emergencias <strong>1457</strong></span>
+        </div>
+      </div>
+    </div>
 
-    <div id="mensajeError" class="mensaje-error"></div>
+    <header class="cabecera-publica">
+      <a class="marca-publica" href="/" aria-label="Inicio Municipalidad de La Serena">
+        <img src="assets/logo-la-serena.png.png" alt="" />
+        <span><strong>LA SERENA</strong><small>ILUSTRE MUNICIPALIDAD</small></span>
+      </a>
+      <nav class="navegacion-publica" aria-label="Navegación principal">
+        <a class="activo" href="/">Inicio</a>
+        <a href="#municipio">Conócenos</a>
+        <a href="#servicios">Servicios municipales</a>
+        <a href="#contacto">Noticias</a>
+      </nav>
+      <span class="sello-cabecera">La Serena<br /><small>Ciudad de todos</small></span>
+      <button type="button" class="boton-login" id="btnAbrirLogin" aria-controls="loginCard" aria-expanded="false">
+        <span aria-hidden="true">▣</span> Inicio de sesión
+      </button>
+    </header>
 
-    <form id="formLogin" novalidate>
-      <div class="campo">
-        <label for="rut">RUT</label>
-        <input
-          type="text"
-          id="rut"
-          name="rut"
-          placeholder="11111111-1"
-          inputmode="numeric"
-          autocomplete="username"
-          maxlength="10"
-          required
-        />
-        <div class="ayuda">Solo números y guion, sin puntos. Ej: 11111111-1</div>
-        <div class="error-campo" id="errorRut"></div>
+    <main class="portada">
+      <section class="barra-busqueda" aria-label="Herramientas del sitio">
+        <div class="buscador"><span aria-hidden="true">⌕</span><input type="search" placeholder="Buscar en el sitio..." aria-label="Buscar en el sitio" /></div>
+        <a class="boton-whatsapp" href="#contacto"><span aria-hidden="true">◉</span> Consulta por WhatsApp</a>
+      </section>
+
+      <section class="hero-publico" id="municipio">
+        <div class="hero-contenido">
+          <p class="hero-etiqueta">LA SERENA · CIUDAD DE TODOS</p>
+          <h2>Construimos una ciudad<br /><strong>para encontrarnos</strong></h2>
+          <p>Información, servicios y oportunidades para nuestra comunidad.</p>
+          <a class="boton-hero" href="#servicios">Conoce nuestros servicios <span>→</span></a>
+        </div>
+        <div class="hero-paisaje" aria-hidden="true"><span class="sol"></span><span class="cerro cerro-lejano"></span><span class="cerro cerro-cercano"></span><span class="mar"></span></div>
+      </section>
+
+      <div class="indicadores" aria-hidden="true"><i class="seleccionado"></i><i></i><i></i><i></i></div>
+
+      <section class="accesos-rapidos" id="servicios" aria-label="Accesos rápidos">
+        <a href="#contacto" class="acceso acceso-destacado"><span class="icono">✉</span><span>Línea Directa<br />Municipal</span><b>→</b></a>
+        <a href="#contacto" class="acceso"><span class="icono">▣</span><span>Atención<br />laboral</span><b>→</b></a>
+        <a href="#contacto" class="acceso"><span class="icono">▤</span><span>Calendario<br />juzgados</span><b>→</b></a>
+        <a href="#contacto" class="acceso"><span class="icono">▥</span><span>Consejo<br />online</span><b>→</b></a>
+        <a href="#contacto" class="acceso"><span class="icono">▰</span><span>Solicitudes<br />patentes</span><b>→</b></a>
+      </section>
+
+      <section class="franja-informativa" id="contacto">
+        <div><span class="franja-icono">◎</span><p><strong>Servicios a tu alcance</strong><br />Realiza tus trámites municipales de forma simple y rápida.</p></div>
+        <div><span class="franja-icono">◌</span><p><strong>Noticias de La Serena</strong><br />Conoce las novedades de nuestra comuna.</p></div>
+        <div><span class="franja-icono">✦</span><p><strong>Atención ciudadana</strong><br />Estamos disponibles para escucharte.</p></div>
+      </section>
+    </main>
+
+    <aside class="login-card" id="loginCard" aria-label="Inicio de sesión para funcionarios" aria-hidden="true">
+      <div class="login-heading">
+        <img src="assets/logo-la-serena.png.png" alt="La Serena" class="login-logo" />
+        <div><span>Portal funcionario</span><h1>Iniciar sesión</h1></div>
+        <button type="button" class="boton-cerrar-login" id="btnCerrarLogin" aria-label="Cerrar inicio de sesión">×</button>
       </div>
 
-      <div class="campo">
-        <label for="password">Contraseña</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="••••••••"
-          autocomplete="current-password"
-          required
-        />
-        <div class="error-campo" id="errorPassword"></div>
-      </div>
+      <div id="mensajeError" class="mensaje-error"></div>
 
-      <button type="submit" class="btn-primario" id="btnIngresar">Ingresar</button>
-    </form>
+      <form id="formLogin" novalidate>
+        <div class="campo">
+          <label for="rut">RUT</label>
+          <input type="text" id="rut" name="rut" inputmode="numeric" autocomplete="username" maxlength="10" placeholder="Ingresa tu RUT" required />
+          <div class="ayuda">Solo números y guion, sin puntos.</div>
+          <div class="error-campo" id="errorRut"></div>
+        </div>
 
-    <div class="login-footer">Acceso restringido a funcionarios autorizados de la Municipalidad de La Serena.</div>
+        <div class="campo">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required />
+          <div class="error-campo" id="errorPassword"></div>
+        </div>
+
+        <button type="submit" class="btn-primario" id="btnIngresar">Ingresar al portal <span>→</span></button>
+      </form>
+
+      <div class="login-footer">Acceso restringido a funcionarios autorizados.</div>
+    </aside>
   </div>
 
   <script src="js/login.js"></script>

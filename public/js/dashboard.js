@@ -122,6 +122,16 @@ function formatearFecha(iso) {
 function configurarFormularioCaptura() {
   const form = document.getElementById('formCaptura');
   const confirmacion = document.getElementById('confirmacionCaptura');
+  const inputTelefono = document.getElementById('telefono');
+
+  inputTelefono.addEventListener('input', () => {
+    const valor = inputTelefono.value;
+    if (!valor.startsWith('+')) {
+      inputTelefono.value = '';
+      return;
+    }
+    inputTelefono.value = `+${valor.slice(1).replace(/\D/g, '').slice(0, 11)}`;
+  });
 
   form.addEventListener('submit', async (evento) => {
     evento.preventDefault();
@@ -136,6 +146,12 @@ function configurarFormularioCaptura() {
       descripcion: document.getElementById('descripcion').value.trim(),
       funcionario: document.getElementById('funcionario').value.trim(),
     };
+
+    if (!/^\+569\d{8}$/.test(payload.telefono)) {
+      alert('El teléfono debe comenzar con +569 y contener 8 números adicionales.');
+      inputTelefono.focus();
+      return;
+    }
 
     const respuesta = await fetch('/api/requerimientos', {
       method: 'POST',

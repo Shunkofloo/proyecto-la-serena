@@ -9,7 +9,7 @@
 <body>
   <header class="app-header">
     <div class="marca">
-      <img src="/assets/logo.svg" alt="Municipalidad de La Serena" />
+      <img src="/assets/logo-la-serena.png.png" alt="La Serena" />
       <div>
         <div class="nombre">SIGED La Serena</div>
         <div class="subnombre">Coordinación de Delegaciones</div>
@@ -24,7 +24,7 @@
   <nav class="tabs">
     <button class="activo" data-vista="captura">Captura de Requerimiento</button>
     <button data-vista="semaforo">Panel Semáforo</button>
-    <button data-vista="kanban">Tablero Kanban</button>
+    <button data-vista="kanban">Cronograma</button>
   </nav>
 
   <main>
@@ -41,7 +41,7 @@
           </div>
           <div>
             <label for="telefono">Teléfono WhatsApp *</label>
-            <input type="text" id="telefono" placeholder="+56 9 8765 4321" required />
+            <input type="tel" id="telefono" inputmode="tel" maxlength="12" pattern="\+569[0-9]{8}" placeholder="+56987654321" required />
           </div>
 
           <div>
@@ -117,7 +117,7 @@
       </div>
     </section>
 
-    <!-- 6.3 Tablero Kanban -->
+    <!-- 6.3 Cronograma -->
     <section class="vista" id="vista-kanban">
       <div class="panel">
         <h2>Tablero Operativo por Estado</h2>
